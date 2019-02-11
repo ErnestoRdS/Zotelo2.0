@@ -1,20 +1,15 @@
 #include <stdio.h>
 #include <complex.h>
 #include <math.h>
+#include <stdlib.h>
 
-//Estructura prrona, alv, compa. :v
-typedef struct {
-        double x;
-        double y;
-}cin;
-
-int mandelbrotSet(double, float, int);
+int mandelbrotSet(complex double, complex double, int);
 
 int main() {
         //Declarar constante que se utilizarán.
-        const int ite = 100; //Número de Iteraciones.
-        const int T = 128;   //Tuplas de la Matriz. :v
-        const int A = 128;   //Atributos de la Matriz. :v
+        const int ite = 1000; //Número de Iteraciones.
+        const int T = 1000;   //Tuplas de la Matriz. :v
+        const int A = 1000;   //Atributos de la Matriz. :v
         const float lLX = -1.5; //Límite mínimo de X.
         const float uLX = 1.5;  //Límite máximo de X.
         const float lLY = -1.0; //Límite Mínimo de Y.
@@ -22,9 +17,8 @@ int main() {
 
         double dX = ((uLX - lLX) / A);
         double dY = ((uLY - lLY) / T);
-        double fx, fy;
 
-        cin c;
+        complex double c, z;
 
         int n = ite;
 
@@ -32,28 +26,38 @@ int main() {
 
         for(int i = 0; i < T; i++) {
                 for(int j = 0; j < A; j++) {
-                        c.x = (lLX - (j * dX));
-                        c.y = (uLY - (i * dY));
-                        array[i][j] = mandelbrotSet();
+                        c = (lLX + (j * dX)) + ((uLY - (i * dY)) * I);
+                        z = c;
+                        array[i][j] = mandelbrotSet(z, c, n);
                 }
         }
 
-        printf("Matriz: \n");
+        FILE *fptr;
+        fptr = fopen("yogiornogiovanatengounsuegno.pgm", "w");
+
+        //Condicional para archivo corrupto.
+        if(fptr == NULL) {
+                printf("Archivo no existente. :'v \n");
+        }
+
+        fprintf(fptr, "%s \n", "P2");
+        fprintf(fptr, "%d %d \n", T, A);
+        fprintf(fptr, "%d \n", 1);
         for(int i = 0; i < T; i++) {
                 for(int j = 0; j < A; j++) {
-                        printf("%d ", array[i][j]);
+                        fprintf(fptr, "%d ", array[i][j]);
                 }
-                printf("\n");
+                fprintf(fptr, "\n");
         }
+        fclose(fptr);
 }
 
-int mandelbrotSet(double fnZ, float cnum, int nn) {
-        fnZ += pow(fnZ, 2) + cnum;
-
-        if(fnZ > 2)
+int mandelbrotSet(complex double fz, complex cnum, int knn) {
+        fz = cpow(fz, 2) + cnum;
+        if(knn > 0)
+                return mandelbrotSet(fz, cnum, knn-1);
+        else if(cabs(fz) > 2)
                 return 0;
-        else if(nn == 0)
-                return 1;
         else
-                return mandelbrotSet(fnZ, cnum, nn-1);
+                return 1;
 }
