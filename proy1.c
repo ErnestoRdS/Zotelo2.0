@@ -11,7 +11,7 @@ int main() {
         const int T = 1000;   //Tuplas de la Matriz. :v
         const int A = 1000;   //Atributos de la Matriz. :v
         const float lLX = -1.5; //Límite mínimo de X.
-        const float uLX = 1.5;  //Límite máximo de X.
+        const float uLX = 0.5;  //Límite máximo de X.
         const float lLY = -1.0; //Límite Mínimo de Y.
         const float uLY = 1.0;  //Límite Máximo de Y.
 
